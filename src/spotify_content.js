@@ -114,6 +114,16 @@ const main = async () => {
       const link = titleEl.href;
       const isPlaying = state.getAttribute("aria-label") === "Pause";
 
+      console.log("getPlayingTrack", {
+        title: titleEl.textContent,
+        art: albumArt.src,
+        artists: artists.textContent,
+        position: position.textContent,
+        link,
+        duration: duration.textContent,
+        isPlaying,
+      });
+
       return {
         title: titleEl.textContent,
         art: albumArt.src,

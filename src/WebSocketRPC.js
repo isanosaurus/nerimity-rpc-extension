@@ -98,6 +98,10 @@ export class WebSocketRPC {
     if (clonedOpts) {
       clonedOpts.updatedAt = Date.now();
     }
+    console.log("SENDING", {
+      name: "UPDATE_RPC",
+      data: clonedOpts,
+    });
     this.ws.send(
       JSON.stringify({
         name: "UPDATE_RPC",
@@ -113,7 +117,6 @@ export class WebSocketRPC {
     this.events?.[event]?.(data);
   }
 }
-
 
 const safeParseJson = (str) => {
   try {
