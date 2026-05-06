@@ -96,7 +96,7 @@ const main = async () => {
       }
     }
     getPlayingTrack() {
-      const titleEl = document.querySelector("[data-testid=context-item-link");
+      const titleEl = document.querySelector("[data-testid=context-item-link]");
       const artists = document.querySelector(
         "[data-testid=context-item-info-subtitles]"
       );
@@ -113,6 +113,16 @@ const main = async () => {
 
       const link = titleEl.href;
       const isPlaying = state.getAttribute("aria-label") === "Pause";
+
+      console.log("getPlayingTrack", {
+        title: titleEl.textContent,
+        art: albumArt.src,
+        artists: artists.textContent,
+        position: position.textContent,
+        link,
+        duration: duration.textContent,
+        isPlaying,
+      });
 
       return {
         title: titleEl.textContent,
@@ -144,6 +154,12 @@ const main = async () => {
   rpc.connect();
 
   const makeRequest = (data) => {
+    const position = hmsToMilliseconds(data.position);
+    let realDuration = hmsToMilliseconds(data.duration);
+    if (data.duration.startsWith("-")) {
+      realDuration = hmsToMilliseconds(data.duration.substring(1));
+      realDuration = realDuration + position;
+    }
     rpc.request({
       name: "Spotify",
       action: "Listening to",
@@ -152,10 +168,7 @@ const main = async () => {
       link: data.link,
       subtitle: data.artists,
       startedAt: Date.now() - hmsToMilliseconds(data.position),
-      endsAt:
-        Date.now() -
-        hmsToMilliseconds(data.position) +
-        hmsToMilliseconds(data.duration),
+      endsAt: Date.now() - position + realDuration,
     });
   };
 
