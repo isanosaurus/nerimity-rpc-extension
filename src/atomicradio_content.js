@@ -36,7 +36,8 @@ const main = async () => {
       const playButtonEl = document.querySelector("#play-button");
       const spacedId = document.querySelector("#spaceId");
       const endingAt = document.querySelector("#endingAt");
-
+      console.log(spacedId.textContent);
+      console.log(endingAt.textContent);
 
       const linkChangeObserver = new MutationObserver(
         throttleFunction(() => {
@@ -80,12 +81,13 @@ const main = async () => {
       }
     }
     getPlayingTrack() {
-      const trackData = JSON.parse(localStorage.getItem("currentTrack"));
+      const spaceData = JSON.parse(localStorage.getItem("currentSpace"));
+      const trackData = spaceData["currentTrack"];
       console.log(trackData);
       const artists = trackData.artist;
       const artwork = trackData.artwork;
       const duration = Date.parse(trackData.duration);
-      const space = document.querySelector("#spaceId");
+      const space = spaceData.id;
       const endingAt = Date.parse(trackData.endingAt);
       const startingAt = Date.parse(trackData.startingAt);
       const title = trackData.title;
